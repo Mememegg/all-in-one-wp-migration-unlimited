@@ -10,15 +10,16 @@ on:
 
 jobs:
   analyze:
-    name: Analyze (${ { matrix.language } })
-    runs-on: ${ { matrix.language == 'swift' && 'macos-latest' || 'ubuntu-latest' } }
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest  # Assuming the project doesn't need macOS
+
     permissions:
       security-events: write
 
     strategy:
       fail-fast: false
       matrix:
-        language: ['javascript-typescript', 'python']  # Only include languages present in your project
+        language: ['javascript-typescript', 'python']  # Adjust languages based on your project
 
     steps:
     - name: Checkout repository
@@ -27,9 +28,9 @@ jobs:
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
-        languages: ${ { matrix.language } }
+        languages: ${{ matrix.language }}
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
       with:
-        category: "/language:${ { matrix.language } }"
+        category: "/language:${{ matrix.language }}"
